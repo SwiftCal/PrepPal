@@ -1,6 +1,6 @@
-# PrepPal
+# 🥗 PrepPal
 
-## Table of Contents  
+## 📚 Table of Contents  
 1. [Overview](#overview)  
 2. [Product Spec](#product-spec)  
 3. [Wireframes](#wireframes)  
@@ -8,12 +8,12 @@
 
 ---
 
-## Overview
+## 📖 Overview
 
-### Description  
+### 📌 Description  
 **PrepPal** is a mobile meal planning app that helps users generate weekly meal plans, create smart grocery lists, and reduce food waste by suggesting meals based on what they already have at home. The app is tailored for busy professionals, college students, and health-conscious users looking to simplify their cooking routine.
 
-### App Evaluation
+### ✅ App Evaluation
 
 - **Category:** Food & Drink / Health  
 - **Mobile:** Yes, mobile-only (iOS)  
@@ -24,9 +24,9 @@
 
 ---
 
-## Product Spec
+## 🛠 Product Spec
 
-### 1. User Stories (Required and Optional)
+### 1. ✅ User Stories (Required and Optional)
 
 **Required Must-have Stories**
 
@@ -49,70 +49,70 @@
 
 ---
 
-### 2. Screen Archetypes
+### 2. 🧭 Screen Archetypes
 
-- [ ] **Login/Sign Up Screen**  
+- **Login/Sign Up Screen**  
   * User can log in or register for an account
 
-- [ ] **Dashboard Screen**  
+- **Dashboard Screen**  
   * Personalized greeting, featured meals, grocery summary, and “Generate Plan” button
 
-- [ ] **Meal Plan Detail Screen**  
+- **Meal Plan Detail Screen**  
   * User can view full meal details for each recipe
 
-- [ ] **Grocery List Screen**  
+- **Grocery List Screen**  
   * User can see and check off ingredients grouped by category (Produce, Protein, etc.)
 
-- [ ] **Pantry Screen**  
+- **Pantry Screen**  
   * User can add, edit, or delete pantry ingredients manually  
 
-- [ ] **Settings/Profile Screen**  
+- **Settings/Profile Screen**  
   * User can manage account info, preferences, and log out  
 
 ---
 
-### 3. Navigation
+### 3. 🔄 Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-- [x] Dashboard  
-- [x] Grocery List  
-- [x] Pantry  
-- [x] Profile  
+- 🏠 Dashboard  
+- 🧺 Grocery List  
+- 🍱 Pantry  
+- 👤 Profile  
 
 **Flow Navigation** (Screen to Screen)
 
-- [ ] **Login Screen**  
+- **Login Screen**  
   * Leads to **Dashboard Screen**
 
-- [ ] **Dashboard Screen**  
+- **Dashboard Screen**  
   * Leads to **Meal Plan Detail Screen**
 
-- [ ] **Dashboard Screen**  
+- **Dashboard Screen**  
   * Leads to **Grocery List Screen**
 
-- [ ] **Dashboard Screen**  
+- **Dashboard Screen**  
   * Leads to **Pantry Screen**
 
 ---
 
-## Wireframes
+## 📝 Wireframes
 
 [Insert hand-drawn or digital wireframes here once created. This can be a PDF or image upload.]
 
-### [BONUS] Digital Wireframes & Mockups  
+### 💻 [BONUS] Digital Wireframes & Mockups  
 [Optional: Add Figma or XD mockups here]
 
-### [BONUS] Interactive Prototype  
+### 🧪 [BONUS] Interactive Prototype  
 [Optional: Add prototype link here]
 
 ---
 
-## Schema
+## 🧬 Schema
 
-### Models
+### 📦 Models
 
-#### User  
+#### 👤 User  
 | Property      | Type     | Description                            |
 |---------------|----------|----------------------------------------|
 | id            | String   | Unique ID for each user                |
@@ -120,7 +120,7 @@
 | password      | String   | Hashed password for login              |
 | dietaryPrefs  | [String] | List of dietary preferences (vegan, etc.) |
 
-#### Meal  
+#### 🍽️ Meal  
 | Property      | Type     | Description                            |
 |---------------|----------|----------------------------------------|
 | id            | String   | Unique ID for each meal                |
@@ -129,7 +129,7 @@
 | prepTime      | Int      | Estimated time in minutes              |
 | ingredients   | [String] | List of ingredient names               |
 
-#### GroceryItem  
+#### 🛒 GroceryItem  
 | Property      | Type     | Description                            |
 |---------------|----------|----------------------------------------|
 | id            | String   | Unique ID for grocery item             |
@@ -138,7 +138,7 @@
 | category      | String   | Group (e.g., Produce, Dairy)           |
 | isChecked     | Bool     | Whether user has checked it off        |
 
-#### PantryItem  
+#### 🧊 PantryItem  
 | Property      | Type     | Description                            |
 |---------------|----------|----------------------------------------|
 | id            | String   | Unique ID for pantry item              |
@@ -148,21 +148,21 @@
 
 ---
 
-### Networking
+### 🌐 Networking
 
-#### [Login / Signup]
+#### 🔐 [Login / Signup]
 - `[POST] /register` – create a new account  
 - `[POST] /login` – log in and return session token  
 
-#### [Meal Plan]
+#### 🍽️ [Meal Plan]
 - `[GET] /meals` – retrieve suggested meals  
 - `[POST] /meals/generate` – generate new weekly plan  
 
-#### [Grocery List]
+#### 🛒 [Grocery List]
 - `[GET] /grocery-list` – get current grocery list  
 - `[POST] /grocery-list/check` – update item as checked  
 
-#### [Pantry]
+#### 🧊 [Pantry]
 - `[GET] /pantry` – get pantry items  
 - `[POST] /pantry/add` – add new pantry item  
 - `[DELETE] /pantry/{id}` – remove pantry item  
