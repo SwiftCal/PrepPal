@@ -98,13 +98,26 @@
 
 ## 📝 Wireframes
 
-[Insert hand-drawn or digital wireframes here once created. This can be a PDF or image upload.]
+### Dashboard Page
+![Dashboard](https://github.com/user-attachments/assets/7cf2a060-d515-4fce-a8a0-94ce75dc4735)
 
-### 💻 [BONUS] Digital Wireframes & Mockups  
-[Optional: Add Figma or XD mockups here]
+### Login / Signup Page
+![Login Page](https://github.com/user-attachments/assets/103ee6f0-e5bf-42af-b405-138749c4a212)
 
-### 🧪 [BONUS] Interactive Prototype  
-[Optional: Add prototype link here]
+### Profile Page
+![Profile](https://github.com/user-attachments/assets/0c599e6d-8a1c-4580-abbc-8bddc49c32d5)
+
+### Grocery List Page
+![Grocery List](https://github.com/user-attachments/assets/ea61075c-7a20-4eec-a352-2a019dc71ca0)
+
+### Pantry Page
+![Pantry](https://github.com/user-attachments/assets/e7660c60-3507-4b1f-9084-2b4f995b9714)
+
+### Meal Detail Page
+![Meal Detail Page](https://github.com/user-attachments/assets/a9bbdec4-7117-4c73-a6db-6afa18a48154)
+
+### Scan Food Page
+![scan page - preppal](https://github.com/user-attachments/assets/3ba42dbb-8646-4914-9f3d-c6806f6da4cd)
 
 ---
 
