@@ -23,42 +23,8 @@ struct ContentView: View {
                 isAuthenticated = true
             })
         } else {
-            // Show the main app content once authenticated
-            NavigationSplitView {
-                List {
-                    ForEach(items) { item in
-                        NavigationLink {
-                            Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                        } label: {
-                            Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                        }
-                    }
-                    .onDelete(perform: deleteItems)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
-                    }
-                    ToolbarItem {
-                        Button(action: addItem) {
-                            Label("Add Item", systemImage: "plus")
-                        }
-                    }
-                    
-                    // Add logout button
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            // Log out
-                            isAuthenticated = false
-                        }) {
-                            Text("Logout")
-                        }
-                    }
-                }
-                .navigationTitle("PrepPal")
-            } detail: {
-                Text("Select an item")
-            }
+            // Show the dashboard view once authenticated
+            DashboardView()
         }
     }
 
@@ -80,5 +46,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: [Item.self, User.self], inMemory: true)
+        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
 }
