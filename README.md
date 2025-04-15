@@ -33,11 +33,11 @@
 - [x] User can register and log in to their account  
 - [x] User sees a dashboard with a personalized greeting and this week’s meals  
 - [x] User can view a scrollable list of featured meals with images, names, and prep times  
-- [x] User can generate a new weekly meal plan  
-- [x] User can see a summary of their grocery list for the week  
-- [x] User can check off grocery list items  
-- [x] User can add pantry ingredients manually  
-- [x] User receives notifications about expiring pantry items  
+- [ ] User can generate a new weekly meal plan  
+- [ ] User can see a summary of their grocery list for the week  
+- [ ] User can check off grocery list items  
+- [ ] User can add pantry ingredients manually  
+- [ ] User receives notifications about expiring pantry items  
 
 **Optional Nice-to-have Stories**
 
@@ -48,6 +48,11 @@
 - [ ] User can link grocery list to an external delivery service (e.g., Instacart)  
 
 ---
+
+### Development Progress
+**Sprint 1**
+![Screen Recording 2025-04-14 at 21 51 27](https://github.com/user-attachments/assets/3c3b4760-9698-44d4-9131-bb4c623a5f64)
+
 
 ### 2. 🧭 Screen Archetypes
 
