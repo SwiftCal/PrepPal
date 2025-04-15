@@ -11,31 +11,20 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-
+    
+    // State to track if user is authenticated
+    @State private var isAuthenticated = false
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
+        if !isAuthenticated {
+            // Show the authentication view if not authenticated
+            AuthView(onAuthenticated: {
+                // Set authenticated to true when the callback is triggered
+                isAuthenticated = true
+            })
+        } else {
+            // Show the dashboard view once authenticated
+            DashboardView()
         }
     }
 
@@ -57,5 +46,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
 }
