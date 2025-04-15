@@ -26,7 +26,7 @@ class AuthModel: ObservableObject {
     }
 
     
-    func signUp(email: String, password: String, dietaryPrefs: [String] = []) {
+    func signUp(email: String, password: String, fullname: String, dietaryPrefs: [String] = []) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("Signup error: \(error.localizedDescription)")
@@ -37,6 +37,7 @@ class AuthModel: ObservableObject {
             // this would store the user items in a collection in firebase
             self.db.collection("users").document(user.uid).setData([
                 "id": user.uid,
+                "fullname": fullname,
                 "email": email,
                 "dietaryPrefs": dietaryPrefs
             ])
@@ -44,7 +45,7 @@ class AuthModel: ObservableObject {
     }
 
     
-    func signIn(email: String, password: String) {
+    func logIn(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("Couldn't login: \(error.localizedDescription)")
