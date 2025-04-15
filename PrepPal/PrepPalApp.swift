@@ -7,9 +7,17 @@
 
 import SwiftUI
 import SwiftData
+import FirebaseCore
 
 @main
 struct PrepPalApp: App {
+    @StateObject private var authenthicationModel = AuthModel()
+    
+    //used this to add firebase
+    init(){
+        FirebaseApp.configure()
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -28,7 +36,7 @@ struct PrepPalApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(authenthicationModel)
         }
         .modelContainer(sharedModelContainer)
     }

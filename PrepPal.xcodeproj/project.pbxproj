@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EACEA7012DAE9CE900C4D1E0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EACEA7002DAE9CE900C4D1E0 /* FirebaseAuth */; };
+		EACEA7032DAE9CE900C4D1E0 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = EACEA7022DAE9CE900C4D1E0 /* FirebaseCore */; };
+		EACEA7052DAE9CE900C4D1E0 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EACEA7042DAE9CE900C4D1E0 /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		79D7CF9A2DA5986600978CC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,6 +35,23 @@
 		79D7CFA32DA5986600978CC2 /* PrepPalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrepPalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		EACEA6FD2DAE9C8F00C4D1E0 /* Exceptions for "PrepPalUITests" folder in "PrepPal" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 79D7CF862DA5986500978CC2 /* PrepPal */;
+		};
+		EACEA6FE2DAE9C8F00C4D1E0 /* Exceptions for "PrepPalUITests" folder in "PrepPalTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 79D7CF982DA5986600978CC2 /* PrepPalTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		79D7CF892DA5986500978CC2 /* PrepPal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -42,6 +65,10 @@
 		};
 		79D7CFA62DA5986600978CC2 /* PrepPalUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EACEA6FD2DAE9C8F00C4D1E0 /* Exceptions for "PrepPalUITests" folder in "PrepPal" target */,
+				EACEA6FE2DAE9C8F00C4D1E0 /* Exceptions for "PrepPalUITests" folder in "PrepPalTests" target */,
+			);
 			path = PrepPalUITests;
 			sourceTree = "<group>";
 		};
@@ -52,6 +79,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EACEA7032DAE9CE900C4D1E0 /* FirebaseCore in Frameworks */,
+				EACEA7012DAE9CE900C4D1E0 /* FirebaseAuth in Frameworks */,
+				EACEA7052DAE9CE900C4D1E0 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +142,9 @@
 			);
 			name = PrepPal;
 			packageProductDependencies = (
+				EACEA7002DAE9CE900C4D1E0 /* FirebaseAuth */,
+				EACEA7022DAE9CE900C4D1E0 /* FirebaseCore */,
+				EACEA7042DAE9CE900C4D1E0 /* FirebaseFirestore */,
 			);
 			productName = PrepPal;
 			productReference = 79D7CF872DA5986500978CC2 /* PrepPal.app */;
@@ -195,6 +228,9 @@
 			);
 			mainGroup = 79D7CF7E2DA5986500978CC2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EACEA6FF2DAE9CE900C4D1E0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 79D7CF882DA5986500978CC2 /* Products */;
 			projectDirPath = "";
@@ -396,7 +432,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PrepPal/Preview Content\"";
-				DEVELOPMENT_TEAM = D7UR4D5M2J;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -425,7 +461,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PrepPal/Preview Content\"";
-				DEVELOPMENT_TEAM = D7UR4D5M2J;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -558,6 +594,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EACEA6FF2DAE9CE900C4D1E0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EACEA7002DAE9CE900C4D1E0 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EACEA6FF2DAE9CE900C4D1E0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		EACEA7022DAE9CE900C4D1E0 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EACEA6FF2DAE9CE900C4D1E0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		EACEA7042DAE9CE900C4D1E0 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EACEA6FF2DAE9CE900C4D1E0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 79D7CF7F2DA5986500978CC2 /* Project object */;
 }

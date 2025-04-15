@@ -12,6 +12,8 @@ struct DashboardView: View {
     // Access to the model context for database operations
     @Environment(\.modelContext) private var modelContext
     
+
+    
     // Query for fetching user data
     @Query private var users: [User]
     
@@ -131,6 +133,10 @@ struct DashboardView: View {
 
 // MARK: - App Header Component
 struct AppHeader: View {
+//    also added the authentication model here
+    @EnvironmentObject var authenthicationModel: AuthModel
+    // added this to make logout show the
+    @State var showLogoutConfirmation = false
     var onLogout: (() -> Void)?
     
     var body: some View {
@@ -167,7 +173,7 @@ struct AppHeader: View {
                 
                 // Profile / Logout Menu
                 Button(action: {
-                    onLogout?()
+                    showLogoutConfirmation = true
                 }) {
                     Image(systemName: "person.circle")
                         .font(.system(size: 20))
@@ -176,6 +182,13 @@ struct AppHeader: View {
                         .background(Color(.systemGray6))
                         .clipShape(Circle())
                 }
+                .alert("Are you sure you want to log out?", isPresented: $showLogoutConfirmation) {
+                    Button("Log Out", role: .destructive) {
+                        authenthicationModel.signOut()
+                    }
+                    Button("Cancel", role: .cancel) { }
+                }
+
             }
         }
         .padding(.top, 10)

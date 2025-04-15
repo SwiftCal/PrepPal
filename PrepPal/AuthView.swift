@@ -20,6 +20,10 @@ enum AuthMode {
 }
 
 struct AuthView: View {
+    // authentication object to help use the login, signup and the likes
+    @EnvironmentObject var authenthicationModel: AuthModel
+    
+    
     // State variables
     @State private var authMode: AuthMode = .login
     @State private var email: String = ""
@@ -159,7 +163,7 @@ struct AuthView: View {
             
             // Login button
             Button(action: {
-                handleLogin()
+                authenthicationModel.logIn(email: email, password: password)
             }) {
                 HStack {
                     Text("Log In")
@@ -214,7 +218,9 @@ struct AuthView: View {
             
             // Sign up button
             Button(action: {
-                handleSignup()
+                // handleLogin()
+                // i replaced this with the authenication model signup function
+                authenthicationModel.signUp(email: email, password: password, fullname: fullName )
             }) {
                 HStack {
                     Text("Sign Up")
@@ -234,70 +240,70 @@ struct AuthView: View {
     
     // MARK: - Authentication Methods
     
-    // Handle login attempt
-    private func handleLogin() {
-        // Validate fields
-        guard !email.isEmpty else {
-            setError("Please enter your email")
-            return
-        }
-        
-        guard !password.isEmpty else {
-            setError("Please enter your password")
-            return
-        }
-        
-        // In a real app, you would query the database to find the user
-        // For demo purposes, we'll just simulate a successful login
-        
-        // Simulate successful login
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            // Call the onAuthenticated callback to inform parent view
-            onAuthenticated?()
-        }
-    }
+//    // Handle login attempt
+//    private func handleLogin() {
+//        // Validate fields
+//        guard !email.isEmpty else {
+//            setError("Please enter your email")
+//            return
+//        }
+//        
+//        guard !password.isEmpty else {
+//            setError("Please enter your password")
+//            return
+//        }
+//        
+//        // In a real app, you would query the database to find the user
+//        // For demo purposes, we'll just simulate a successful login
+//        
+//        // Simulate successful login
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            // Call the onAuthenticated callback to inform parent view
+//            onAuthenticated?()
+//        }
+//    }
     
-    // Handle signup attempt
-    private func handleSignup() {
-        // Validate fields
-        guard !fullName.isEmpty else {
-            setError("Please enter your full name")
-            return
-        }
-        
-        guard !email.isEmpty, email.contains("@") else {
-            setError("Please enter a valid email address")
-            return
-        }
-        
-        guard !password.isEmpty, password.count >= 6 else {
-            setError("Password must be at least 6 characters")
-            return
-        }
-        
-        guard password == confirmPassword else {
-            setError("Passwords do not match")
-            return
-        }
-        
-        // Create a new User (in a real app, you would hash the password)
-        let newUser = User(fullName: fullName, email: email, passwordHash: password)
-        
-        // Add to database
-        modelContext.insert(newUser)
-        
-        // Save the changes
-        do {
-            try modelContext.save()
-            
-            // Call the onAuthenticated callback to inform parent view
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                onAuthenticated?()
-            }
-        } catch {
-            setError("Error creating account: \(error.localizedDescription)")
-        }
-    }
+//    // Handle signup attempt
+//    private func handleSignup() {
+//        // Validate fields
+//        guard !fullName.isEmpty else {
+//            setError("Please enter your full name")
+//            return
+//        }
+//        
+//        guard !email.isEmpty, email.contains("@") else {
+//            setError("Please enter a valid email address")
+//            return
+//        }
+//        
+//        guard !password.isEmpty, password.count >= 6 else {
+//            setError("Password must be at least 6 characters")
+//            return
+//        }
+//        
+//        guard password == confirmPassword else {
+//            setError("Passwords do not match")
+//            return
+//        }
+//        
+//        // Create a new User (in a real app, you would hash the password)
+//        let newUser = User(fullName: fullName, email: email, passwordHash: password)
+//        
+//        // Add to database
+//        modelContext.insert(newUser)
+//        
+//        // Save the changes
+//        do {
+//            try modelContext.save()
+//            
+//            // Call the onAuthenticated callback to inform parent view
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                onAuthenticated?()
+//            }
+//        } catch {
+//            setError("Error creating account: \(error.localizedDescription)")
+//        }
+//    }
     
     // Handle forgot password
     private func handleForgotPassword() {
@@ -384,4 +390,4 @@ struct PrimaryButtonStyle: ButtonStyle {
 #Preview {
     AuthView(onAuthenticated: nil)
         .modelContainer(for: User.self, inMemory: true)
-} 
+}

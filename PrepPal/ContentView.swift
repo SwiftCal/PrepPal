@@ -12,21 +12,33 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
+//    added the authentication model here
+    @EnvironmentObject var authenthicationModel: AuthModel
+    
     // State to track if user is authenticated
     @State private var isAuthenticated = false
     
     var body: some View {
-        if !isAuthenticated {
-            // Show the authentication view if not authenticated
-            AuthView(onAuthenticated: {
-                // Set authenticated to true when the callback is triggered
-                isAuthenticated = true
-            })
+
+        if authenthicationModel.user != nil {
+            DashboardView() // your main app view
         } else {
-            // Show the dashboard view once authenticated
-            DashboardView()
+            AuthView()
         }
+        
     }
+    
+    //        if !isAuthenticated {
+    //            // Show the authentication view if not authenticated
+    //            AuthView(onAuthenticated: {
+    //                // Set authenticated to true when the callback is triggered
+    //                isAuthenticated = true
+    //            })
+    //        } else {
+    //            // Show the dashboard view once authenticated
+    //            DashboardView()
+    //        }
+            
 
     private func addItem() {
         withAnimation {
@@ -44,7 +56,7 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
-}
+//#Preview {
+//    ContentView()
+//        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
+//}
