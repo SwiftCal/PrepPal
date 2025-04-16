@@ -400,62 +400,66 @@ struct MealCard: View {
     let meal: Meal
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // Meal image with prep time badge
-            ZStack(alignment: .topTrailing) {
-                // Placeholder image
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .aspectRatio(1.5, contentMode: .fit)
-                    .cornerRadius(8)
-                    .frame(width: 180)
+        NavigationLink(destination: MealDetailView()) {
+            VStack(alignment: .leading, spacing: 8) {
+                // Meal image with prep time badge
+                ZStack(alignment: .topTrailing) {
+                    // Placeholder image
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .aspectRatio(1.5, contentMode: .fit)
+                        .cornerRadius(8)
+                        .frame(width: 180)
+                    
+                    // Prep time badge
+                    Text("\(meal.prepTimeMinutes) min")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(4)
+                        .padding(8)
+                }
                 
-                // Prep time badge
-                Text("\(meal.prepTimeMinutes) min")
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(4)
-                    .padding(8)
-            }
-            
-            // Meal name and description
-            VStack(alignment: .leading, spacing: 2) {
-                // Meal name
-                Text(meal.name)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .lineLimit(1)
+                // Meal name and description
+                VStack(alignment: .leading, spacing: 2) {
+                    // Meal name
+                    Text(meal.name)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+                        .foregroundColor(.primary)
+                    
+                    // Optional: Add description tooltip on hover/long press
+                    // Text(meal.mealDescription)
+                    //     .font(.caption)
+                    //     .foregroundColor(.secondary)
+                    //     .lineLimit(1)
+                }
                 
-                // Optional: Add description tooltip on hover/long press
-                // Text(meal.mealDescription)
-                //     .font(.caption)
-                //     .foregroundColor(.secondary)
-                //     .lineLimit(1)
-            }
-            
-            // Meal type badge
-            if let dietaryType = meal.dietaryType {
-                Text(dietaryType)
-                    .font(.caption)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.gray.opacity(0.1))
-                    .foregroundColor(Color.primary.opacity(0.8))
-                    .cornerRadius(4)
-            } else {
-                Text(meal.mealType)
-                    .font(.caption)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.gray.opacity(0.1))
-                    .foregroundColor(Color.primary.opacity(0.8))
-                    .cornerRadius(4)
+                // Meal type badge
+                if let dietaryType = meal.dietaryType {
+                    Text(dietaryType)
+                        .font(.caption)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.gray.opacity(0.1))
+                        .foregroundColor(Color.primary.opacity(0.8))
+                        .cornerRadius(4)
+                } else {
+                    Text(meal.mealType)
+                        .font(.caption)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.gray.opacity(0.1))
+                        .foregroundColor(Color.primary.opacity(0.8))
+                        .cornerRadius(4)
+                }
             }
         }
+        .buttonStyle(PlainButtonStyle())
         .frame(width: 180)
         .padding(.bottom, 8)
         .background(Color.white)

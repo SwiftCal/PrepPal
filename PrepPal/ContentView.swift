@@ -13,17 +13,30 @@ struct ContentView: View {
     @Query private var items: [Item]
     
 //    added the authentication model here
-    @EnvironmentObject var authenthicationModel: AuthModel
+    @EnvironmentObject var authModel: AuthModel
     
     // State to track if user is authenticated
     @State private var isAuthenticated = false
     
     var body: some View {
 
-        if authenthicationModel.user != nil {
+        if authModel.user != nil {
             DashboardView() // your main app view
         } else {
-            AuthView()
+            NavigationView {
+                VStack(spacing: 20) {
+                    AuthView()
+                    
+                    // For testing purposes
+                    NavigationLink(destination: MealDetailView()) {
+                        Text("Test Meal Detail View")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.prepPalGreen)
+                            .cornerRadius(8)
+                    }
+                }
+            }
         }
         
     }

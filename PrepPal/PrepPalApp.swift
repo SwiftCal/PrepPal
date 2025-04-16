@@ -11,7 +11,7 @@ import FirebaseCore
 
 @main
 struct PrepPalApp: App {
-    @StateObject private var authenthicationModel = AuthModel()
+    @StateObject private var authModel = AuthModel()
     
     //used this to add firebase
     init(){
@@ -36,7 +36,8 @@ struct PrepPalApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(authenthicationModel)
+            ContentView()
+                .environmentObject(authModel)
         }
         .modelContainer(sharedModelContainer)
     }
