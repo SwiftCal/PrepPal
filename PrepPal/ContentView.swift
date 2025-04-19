@@ -37,11 +37,9 @@ struct ContentView: View {
                     Label("Home", systemImage: "house.fill")
                 }
                 
-                // Grocery tab (placeholder)
+                // Grocery tab
                 NavigationView {
-                    Text("Grocery View Coming Soon")
-                        .font(.title)
-                        .foregroundColor(.gray)
+                    GroceryListView()
                 }
                 .tag(Tab.grocery)
                 .tabItem {
