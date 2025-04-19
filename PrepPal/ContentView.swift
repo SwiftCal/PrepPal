@@ -20,7 +20,7 @@ struct ContentView: View {
     
     // Enum for tracking tab selection
     enum Tab {
-        case home, grocery, scan, meals, profile
+        case home, grocery, pantry, meals, profile
     }
     
     var body: some View {
@@ -46,15 +46,13 @@ struct ContentView: View {
                     Label("Grocery", systemImage: "cart.fill")
                 }
                 
-                // Scan tab (placeholder)
+                // Pantry tab (replacing Scan tab)
                 NavigationView {
-                    Text("Scan View Coming Soon")
-                        .font(.title)
-                        .foregroundColor(.gray)
+                    PantryView()
                 }
-                .tag(Tab.scan)
+                .tag(Tab.pantry)
                 .tabItem {
-                    Label("Scan", systemImage: "qrcode.viewfinder")
+                    Label("Pantry", systemImage: "archivebox.fill")
                 }
                 
                 // Meals tab (placeholder)
