@@ -62,74 +62,72 @@ struct GroceryListView: View {
     
     var body: some View {
         // Main layout
-        NavigationView {
-            ZStack(alignment: .bottomTrailing) {
-                // Grocery list content
-                VStack(spacing: 0) {
-                    // Items remaining count
-                    HStack {
-                        Text("\(remainingCount) items remaining")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+        ZStack(alignment: .bottomTrailing) {
+            // Grocery list content
+            VStack(spacing: 0) {
+                // Items remaining count
+                HStack {
+                    Text("\(remainingCount) items remaining")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 8)
+                .padding(.bottom, 8)
+                .background(Color(.systemBackground))
+                
+                // Scrollable list of items by category
+                ScrollView {
+                    VStack(spacing: 24) {
+                        ForEach(groupedItems.keys.sorted(), id: \.self) { category in
+                            if let items = groupedItems[category] {
+                                CategorySection(
+                                    category: category,
+                                    items: items,
+                                    onToggleChecked: toggleItemChecked,
+                                    onDeleteItem: deleteItem
+                                )
+                            }
+                        }
                         
+                        // Extra space at bottom for floating button
                         Spacer()
+                            .frame(height: 80)
                     }
                     .padding(.horizontal)
-                    .padding(.top, 8)
-                    .padding(.bottom, 8)
-                    .background(Color(.systemBackground))
-                    
-                    // Scrollable list of items by category
-                    ScrollView {
-                        VStack(spacing: 24) {
-                            ForEach(groupedItems.keys.sorted(), id: \.self) { category in
-                                if let items = groupedItems[category] {
-                                    CategorySection(
-                                        category: category,
-                                        items: items,
-                                        onToggleChecked: toggleItemChecked,
-                                        onDeleteItem: deleteItem
-                                    )
-                                }
-                            }
-                            
-                            // Extra space at bottom for floating button
-                            Spacer()
-                                .frame(height: 80)
-                        }
-                        .padding(.horizontal)
-                        .padding(.top, 16)
-                    }
+                    .padding(.top, 16)
                 }
-                
-                // Floating "Add Item" button
-                Button(action: {
-                    showAddItemSheet = true
-                }) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(width: 56, height: 56)
-                        .background(Color.prepPalGreen)
-                        .clipShape(Circle())
-                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
-                }
-                .padding(.trailing, 16)
-                .padding(.bottom, 16)
             }
-            .navigationTitle("Grocery List")
-            .navigationBarTitleDisplayMode(.inline)
-            // "Add Item" sheet
-            .sheet(isPresented: $showAddItemSheet) {
-                AddItemSheet(
-                    isPresented: $showAddItemSheet,
-                    name: $newItemName,
-                    quantity: $newItemQuantity,
-                    category: $newItemCategory,
-                    categories: categories,
-                    onAdd: addItem
-                )
+            
+            // Floating "Add Item" button
+            Button(action: {
+                showAddItemSheet = true
+            }) {
+                Image(systemName: "plus")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(width: 56, height: 56)
+                    .background(Color.prepPalGreen)
+                    .clipShape(Circle())
+                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
             }
+            .padding(.trailing, 16)
+            .padding(.bottom, 16)
+        }
+        .navigationTitle("Grocery List")
+        .navigationBarTitleDisplayMode(.inline)
+        // "Add Item" sheet
+        .sheet(isPresented: $showAddItemSheet) {
+            AddItemSheet(
+                isPresented: $showAddItemSheet,
+                name: $newItemName,
+                quantity: $newItemQuantity,
+                category: $newItemCategory,
+                categories: categories,
+                onAdd: addItem
+            )
         }
     }
     

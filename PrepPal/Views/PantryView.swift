@@ -72,72 +72,70 @@ struct PantryView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 16) {
-                // Search bar
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
+        VStack(spacing: 16) {
+            // Search bar
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                
+                TextField("Search pantry items...", text: $searchQuery)
+                    .font(.body)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            .padding(.horizontal)
+            
+            // Sort control
+            HStack {
+                Text("Sort by:")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                Picker("Sort by", selection: $sortBy) {
+                    ForEach(SortOption.allCases) { option in
+                        Text(option.rawValue).tag(option)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            // Pantry items list
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(filteredItems) { item in
+                        PantryItemRow(item: item) {
+                            handleDeleteItem(item.id)
+                        }
+                    }
                     
-                    TextField("Search pantry items...", text: $searchQuery)
-                        .font(.body)
+                    // Extra space at bottom
+                    Spacer().frame(height: 50)
                 }
                 .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
-                .padding(.horizontal)
-                
-                // Sort control
-                HStack {
-                    Text("Sort by:")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                    
-                    Picker("Sort by", selection: $sortBy) {
-                        ForEach(SortOption.allCases) { option in
-                            Text(option.rawValue).tag(option)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
-                // Pantry items list
-                ScrollView {
-                    VStack(spacing: 16) {
-                        ForEach(filteredItems) { item in
-                            PantryItemRow(item: item) {
-                                handleDeleteItem(item.id)
-                            }
-                        }
-                        
-                        // Extra space at bottom
-                        Spacer().frame(height: 50)
-                    }
-                    .padding()
+            }
+        }
+        .navigationTitle("Pantry")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showAddDialog.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                        .foregroundColor(Color.prepPalGreen)
                 }
             }
-            .navigationTitle("Pantry")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showAddDialog.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                            .foregroundColor(Color.prepPalGreen)
-                    }
-                }
-            }
-            .sheet(isPresented: $showAddDialog) {
-                AddPantryItemSheet(
-                    isPresented: $showAddDialog,
-                    newItem: $newItem,
-                    onAdd: handleAddItem
-                )
-            }
+        }
+        .sheet(isPresented: $showAddDialog) {
+            AddPantryItemSheet(
+                isPresented: $showAddDialog,
+                newItem: $newItem,
+                onAdd: handleAddItem
+            )
         }
     }
     
