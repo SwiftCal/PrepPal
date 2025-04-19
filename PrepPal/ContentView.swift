@@ -19,26 +19,11 @@ struct ContentView: View {
     @State private var isAuthenticated = false
     
     var body: some View {
-
         if authModel.user != nil {
             DashboardView() // your main app view
         } else {
-            NavigationView {
-                VStack(spacing: 20) {
-                    AuthView()
-                    
-                    // For testing purposes
-                    NavigationLink(destination: MealDetailView()) {
-                        Text("Test Meal Detail View")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.prepPalGreen)
-                            .cornerRadius(8)
-                    }
-                }
-            }
+            AuthView()
         }
-        
     }
     
     //        if !isAuthenticated {

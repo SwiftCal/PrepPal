@@ -71,9 +71,6 @@ struct MealDetailView: View {
         ZStack(alignment: .bottom) {
             // Main content
             VStack(spacing: 0) {
-                // Custom navigation header
-                customNavigationHeader
-                
                 // Scrollable content
                 ScrollView {
                     VStack(spacing: 24) {
@@ -111,58 +108,8 @@ struct MealDetailView: View {
         }
         .edgesIgnoringSafeArea(.bottom)
         .background(Color(.systemBackground))
-    }
-    
-    // MARK: - Custom Navigation Header
-    private var customNavigationHeader: some View {
-        VStack(spacing: 0) {
-            // Top row with app name and notification
-            HStack {
-                Text("PrepPal")
-                    .font(.headline)
-                    .foregroundColor(Color.prepPalGreen)
-                
-                Spacer()
-                
-                Button(action: {
-                    // Handle notification action
-                }) {
-                    Image(systemName: "bell")
-                        .foregroundColor(.gray)
-                        .padding(8)
-                        .background(Color(.systemGray6))
-                        .clipShape(Circle())
-                }
-            }
-            .padding(.horizontal)
-            .padding(.top, 8)
-            .padding(.bottom, 4)
-            
-            // Divider
-            Rectangle()
-                .fill(Color(.systemGray5))
-                .frame(height: 1)
-            
-            // Back button and title
-            HStack {
-                Button(action: {
-                    dismiss()
-                }) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 16, weight: .semibold))
-                        
-                        Text("Meal Detail")
-                            .font(.system(size: 16, weight: .medium))
-                    }
-                    .foregroundColor(.primary)
-                }
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 12)
-        }
+        .navigationTitle("Meal Detail")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     // MARK: - Meal Image Section
@@ -623,6 +570,8 @@ extension Color {
 // MARK: - Preview
 struct MealDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MealDetailView()
+        NavigationView {
+            MealDetailView()
+        }
     }
 } 
