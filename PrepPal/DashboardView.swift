@@ -73,60 +73,47 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .bottom) {
-                // Main content
-                ScrollView {
-                    VStack(spacing: 20) {
-                        // App Header
-                        AppHeader(onLogout: {
-                            showLogoutAlert = true
-                        })
-                        
-                        // Welcome Banner
-                        WelcomeBanner(userName: userName)
-                        
-                        // This Week's Plan Card
-                        WeekPlanCard(
-                            mealsPlanned: mealsPlanned,
-                            totalMealsNeeded: totalMealsNeeded
-                        )
-                        
-                        // Suggested Meals
-                        SuggestedMealsSection(suggestedMeals: suggestedMeals)
-                        
-                        // Expiring Ingredients Alert - show only if there are expiring ingredients
-                        if !expiringIngredients.isEmpty {
-                            ExpiringIngredientsAlert(ingredients: expiringIngredients)
-                        }
-                        
-                        // Generate Plan Button
-                        GeneratePlanButton()
-                        
-                        // Additional space at bottom for the tab bar
-                        Spacer()
-                            .frame(height: 70)
-                    }
-                    .padding(.horizontal)
-                }
-                .background(Color(.systemBackground))
+        ScrollView {
+            VStack(spacing: 20) {
+                // App Header
+                AppHeader(onLogout: {
+                    showLogoutAlert = true
+                })
                 
-                // Bottom Navigation
-                BottomTabBar(selectedTab: .home)
-            }
-            .edgesIgnoringSafeArea(.bottom)
-            .onAppear {
-                initializeDataIfNeeded()
-            }
-            // Logout confirmation alert
-            .alert("Logout", isPresented: $showLogoutAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Logout", role: .destructive) {
-                    // We'll handle this later
+                // Welcome Banner
+                WelcomeBanner(userName: userName)
+                
+                // This Week's Plan Card
+                WeekPlanCard(
+                    mealsPlanned: mealsPlanned,
+                    totalMealsNeeded: totalMealsNeeded
+                )
+                
+                // Suggested Meals
+                SuggestedMealsSection(suggestedMeals: suggestedMeals)
+                
+                // Expiring Ingredients Alert - show only if there are expiring ingredients
+                if !expiringIngredients.isEmpty {
+                    ExpiringIngredientsAlert(ingredients: expiringIngredients)
                 }
-            } message: {
-                Text("Are you sure you want to logout?")
+                
+                // Generate Plan Button
+                GeneratePlanButton()
             }
+            .padding(.horizontal)
+        }
+        .background(Color(.systemBackground))
+        .onAppear {
+            initializeDataIfNeeded()
+        }
+        // Logout confirmation alert
+        .alert("Logout", isPresented: $showLogoutAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Logout", role: .destructive) {
+                // We'll handle this later
+            }
+        } message: {
+            Text("Are you sure you want to logout?")
         }
     }
 }
@@ -541,85 +528,6 @@ struct GeneratePlanButton: View {
                 .shadow(color: Color.primaryColor.opacity(0.3), radius: 5, x: 0, y: 3)
         }
         .padding(.vertical, 8)
-    }
-}
-
-// MARK: - Bottom Tab Bar Component
-struct BottomTabBar: View {
-    // Enum for tracking active tab
-    enum Tab {
-        case home, grocery, scan, meals, profile
-    }
-    
-    // Currently selected tab
-    let selectedTab: Tab
-    
-    var body: some View {
-        HStack {
-            // Home tab
-            TabBarButton(
-                iconName: "house.fill",
-                label: "Home",
-                isSelected: selectedTab == .home
-            )
-            
-            // Grocery tab
-            TabBarButton(
-                iconName: "cart.fill",
-                label: "Grocery",
-                isSelected: selectedTab == .grocery
-            )
-            
-            // Scan tab
-            TabBarButton(
-                iconName: "qrcode.viewfinder",
-                label: "Scan",
-                isSelected: selectedTab == .scan
-            )
-            
-            // Meals tab
-            TabBarButton(
-                iconName: "calendar",
-                label: "Meals",
-                isSelected: selectedTab == .meals
-            )
-            
-            // Profile tab
-            TabBarButton(
-                iconName: "person.fill",
-                label: "Profile",
-                isSelected: selectedTab == .profile
-            )
-        }
-        .padding(.vertical, 8)
-        .padding(.horizontal)
-        .background(
-            Rectangle()
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.1), radius: 10, y: -5)
-        )
-    }
-}
-
-// MARK: - Tab Bar Button Component
-struct TabBarButton: View {
-    let iconName: String
-    let label: String
-    let isSelected: Bool
-    
-    var body: some View {
-        Button(action: {
-            // Handle tab selection - would be handled by parent view
-        }) {
-            VStack(spacing: 4) {
-                Image(systemName: iconName)
-                    .font(.system(size: 22))
-                Text(label)
-                    .font(.caption2)
-            }
-            .foregroundColor(isSelected ? Color.primaryColor : Color.gray)
-            .frame(maxWidth: .infinity)
-        }
     }
 }
 

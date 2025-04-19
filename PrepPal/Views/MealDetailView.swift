@@ -68,45 +68,38 @@ struct MealDetailView: View {
     
     // MARK: - Body
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Main content
-            VStack(spacing: 0) {
-                // Scrollable content
-                ScrollView {
-                    VStack(spacing: 24) {
-                        // Meal image with badges
-                        mealImageSection
-                        
-                        // Meal details
-                        mealDetailsSection
-                            .padding(.horizontal)
-                        
-                        // Nutritional information button
-                        nutritionalInfoButton
-                            .padding(.horizontal)
-                        
-                        // Tabs for Ingredients and Instructions
-                        tabSection
-                            .padding(.top, 8)
-                        
-                        // Similar recipes section
-                        similarRecipesSection
-                            .padding(.top, 16)
-                        
-                        // Extra space for bottom buttons
-                        Spacer()
-                            .frame(height: 100)
-                    }
+        VStack(spacing: 0) {
+            // Scrollable content
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Meal image with badges
+                    mealImageSection
+                    
+                    // Meal details
+                    mealDetailsSection
+                        .padding(.horizontal)
+                    
+                    // Nutritional information button
+                    nutritionalInfoButton
+                        .padding(.horizontal)
+                    
+                    // Tabs for Ingredients and Instructions
+                    tabSection
+                        .padding(.top, 8)
+                    
+                    // Similar recipes section
+                    similarRecipesSection
+                        .padding(.top, 16)
+                    
+                    // Extra space for bottom buttons
+                    Spacer()
+                        .frame(height: 100)
                 }
-                
-                // Bottom action buttons
-                bottomActionButtons
-                
-                // Bottom tab bar
-                bottomTabBar
             }
+            
+            // Bottom action buttons
+            bottomActionButtons
         }
-        .edgesIgnoringSafeArea(.bottom)
         .background(Color(.systemBackground))
         .navigationTitle("Meal Detail")
         .navigationBarTitleDisplayMode(.inline)
@@ -485,44 +478,6 @@ struct MealDetailView: View {
                 .fill(Color.white)
                 .shadow(color: Color.black.opacity(0.05), radius: 4, y: -2)
         )
-    }
-    
-    // MARK: - Bottom Tab Bar
-    private var bottomTabBar: some View {
-        HStack {
-            tabBarButton(icon: "house", label: "Home", isSelected: false)
-            tabBarButton(icon: "cart", label: "Grocery", isSelected: false)
-            tabBarButton(icon: "qrcode.viewfinder", label: "Scan", isSelected: false)
-            tabBarButton(icon: "fork.knife", label: "Meals", isSelected: true)
-            tabBarButton(icon: "person", label: "Profile", isSelected: false)
-        }
-        .padding(.top, 8)
-        .padding(.bottom, 16)
-        .background(Color.white)
-        .overlay(
-            Rectangle()
-                .frame(height: 1)
-                .foregroundColor(Color(.systemGray5))
-                .padding(.bottom, 45),
-            alignment: .top
-        )
-    }
-    
-    // MARK: - Tab Bar Button
-    private func tabBarButton(icon: String, label: String, isSelected: Bool) -> some View {
-        Button(action: {
-            // Handle tab button action
-        }) {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 20))
-                
-                Text(label)
-                    .font(.caption2)
-            }
-            .foregroundColor(isSelected ? Color.prepPalGreen : Color.gray)
-            .frame(maxWidth: .infinity)
-        }
     }
 }
 
