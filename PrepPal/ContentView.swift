@@ -12,33 +12,75 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
-//    added the authentication model here
-    @EnvironmentObject var authenthicationModel: AuthModel
+    // Authentication model
+    @EnvironmentObject var authModel: AuthModel
     
-    // State to track if user is authenticated
-    @State private var isAuthenticated = false
+    // Selected tab for navigation
+    @State private var selectedTab: Tab = .home
     
-    var body: some View {
-
-        if authenthicationModel.user != nil {
-            DashboardView() // your main app view
-        } else {
-            AuthView()
-        }
-        
+    // Enum for tracking tab selection
+    enum Tab {
+        case home, grocery, pantry, meals, profile
     }
     
-    //        if !isAuthenticated {
-    //            // Show the authentication view if not authenticated
-    //            AuthView(onAuthenticated: {
-    //                // Set authenticated to true when the callback is triggered
-    //                isAuthenticated = true
-    //            })
-    //        } else {
-    //            // Show the dashboard view once authenticated
-    //            DashboardView()
-    //        }
-            
+    var body: some View {
+        // Check if user is authenticated
+        if authModel.user != nil {
+            // Main tab navigation
+            TabView(selection: $selectedTab) {
+                // Home tab
+                NavigationView {
+                    DashboardView()
+                }
+                .tag(Tab.home)
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+                
+                // Grocery tab
+                NavigationView {
+                    GroceryListView()
+                }
+                .tag(Tab.grocery)
+                .tabItem {
+                    Label("Grocery", systemImage: "cart.fill")
+                }
+                
+                // Pantry tab (replacing Scan tab)
+                NavigationView {
+                    PantryView()
+                }
+                .tag(Tab.pantry)
+                .tabItem {
+                    Label("Pantry", systemImage: "archivebox.fill")
+                }
+                
+                // Meals tab (placeholder)
+                NavigationView {
+                    Text("Meals View Coming Soon")
+                        .font(.title)
+                        .foregroundColor(.gray)
+                }
+                .tag(Tab.meals)
+                .tabItem {
+                    Label("Meals", systemImage: "calendar")
+                }
+                
+                // Profile tab
+                NavigationView {
+                    ProfileSettingsView()
+                }
+                .tag(Tab.profile)
+                .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
+            }
+            .accentColor(Color.prepPalGreen)
+        } else {
+            // Authentication view
+            AuthView()
+        }
+    }
 
     private func addItem() {
         withAnimation {
@@ -56,7 +98,8 @@ struct ContentView: View {
     }
 }
 
-//#Preview {
-//    ContentView()
-//        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
-//}
+#Preview {
+    ContentView()
+        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
+        .environmentObject(AuthModel())
+}
