@@ -7,37 +7,11 @@
 
 import SwiftUI
 
-// MARK: - GroceryItem Model
-struct GroceryItem: Identifiable, Hashable {
-    let id: UUID
-    var name: String
-    var quantity: String
-    var category: String
-    var checked: Bool
-    
-    init(id: UUID = UUID(), name: String, quantity: String, category: String, checked: Bool = false) {
-        self.id = id
-        self.name = name
-        self.quantity = quantity
-        self.category = category
-        self.checked = checked
-    }
-}
+
 
 // MARK: - GroceryListView
 struct GroceryListView: View {
-    // State for grocery items
-    @State private var groceryItems: [GroceryItem] = [
-        // Sample items for each category
-        GroceryItem(name: "Spinach", quantity: "1 bunch", category: "Produce"),
-        GroceryItem(name: "Broccoli", quantity: "2 heads", category: "Produce"),
-        GroceryItem(name: "Carrots", quantity: "1 lb", category: "Produce"),
-        GroceryItem(name: "Apples", quantity: "6 pieces", category: "Produce", checked: true),
-        GroceryItem(name: "Avocados", quantity: "3 pieces", category: "Produce"),
-        GroceryItem(name: "Almond Milk", quantity: "1 carton", category: "Dairy Alternatives"),
-        GroceryItem(name: "Tofu", quantity: "1 block", category: "Protein"),
-        GroceryItem(name: "Chickpeas", quantity: "2 cans", category: "Canned Goods")
-    ]
+    @StateObject var ingredientsModel = IngredientViewModel()
     
     // State for the "Add Item" sheet
     @State private var showAddItemSheet = false
@@ -52,12 +26,12 @@ struct GroceryListView: View {
     
     // Computed property for items remaining count
     private var remainingCount: Int {
-        groceryItems.filter { !$0.checked }.count
+        ingredientsModel.groceryItems.filter { !$0.checked }.count
     }
     
     // Computed property for items grouped by category
     private var groupedItems: [String: [GroceryItem]] {
-        Dictionary(grouping: groceryItems) { $0.category }
+        Dictionary(grouping: ingredientsModel.groceryItems) { $0.category }
     }
     
     var body: some View {
@@ -135,25 +109,27 @@ struct GroceryListView: View {
     
     // Toggle item checked state
     private func toggleItemChecked(item: GroceryItem) {
-        if let index = groceryItems.firstIndex(where: { $0.id == item.id }) {
-            groceryItems[index].checked.toggle()
+        if let index = ingredientsModel.groceryItems.firstIndex(where: { $0.id == item.id }) {
+            ingredientsModel.groceryItems[index].checked.toggle()
         }
     }
     
     // Delete an item
     private func deleteItem(item: GroceryItem) {
-        groceryItems.removeAll(where: { $0.id == item.id })
+        ingredientsModel.deleteIngredient(id: item.id)
     }
+
     
     // Add a new item
     private func addItem() {
-        let newItem = GroceryItem(
+        let newItem = NewIngredientItem(
             name: newItemName,
             quantity: newItemQuantity,
             category: newItemCategory
         )
+
         
-        groceryItems.append(newItem)
+        ingredientsModel.addIngredient(newItem)
         
         // Reset form
         newItemName = ""
