@@ -7,62 +7,32 @@
 
 import SwiftUI
 
-// MARK: - PantryItem Model
-struct PantryItem: Identifiable, Hashable {
-    var id: String
-    var name: String
-    var quantity: String
-    var unit: String
-    var expirationDate: Date
-    var daysUntilExpiration: Int
-    
-    init(id: String = UUID().uuidString, name: String, quantity: String, unit: String, expirationDate: Date, daysUntilExpiration: Int) {
-        self.id = id
-        self.name = name
-        self.quantity = quantity
-        self.unit = unit
-        self.expirationDate = expirationDate
-        self.daysUntilExpiration = daysUntilExpiration
-    }
-}
 
-// MARK: - Sort Options Enum
-enum SortOption: String, CaseIterable, Identifiable {
-    case expiration = "Expiration Date"
-    case name = "Name"
-    var id: Self { self }
-}
+
 
 // MARK: - PantryView
 struct PantryView: View {
+    @StateObject private var pantryViewModel = PantryViewModel()
+
+    
     // State
     @State private var searchQuery = ""
     @State private var sortBy: SortOption = .expiration
     @State private var showAddDialog = false
     
-    // Sample pantry items
-    @State private var pantryItems: [PantryItem] = [
-        PantryItem(name: "Spinach", quantity: "1", unit: "bunch", expirationDate: Calendar.current.date(byAdding: .day, value: 2, to: Date())!, daysUntilExpiration: 2),
-        PantryItem(name: "Milk", quantity: "1", unit: "carton", expirationDate: Calendar.current.date(byAdding: .day, value: 5, to: Date())!, daysUntilExpiration: 5),
-        PantryItem(name: "Tomatoes", quantity: "4", unit: "units", expirationDate: Calendar.current.date(byAdding: .day, value: 7, to: Date())!, daysUntilExpiration: 7),
-        PantryItem(name: "Yogurt", quantity: "2", unit: "cups", expirationDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!, daysUntilExpiration: 1),
-        PantryItem(name: "Apples", quantity: "6", unit: "units", expirationDate: Calendar.current.date(byAdding: .day, value: 14, to: Date())!, daysUntilExpiration: 14),
-        PantryItem(name: "Bread", quantity: "1", unit: "loaf", expirationDate: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, daysUntilExpiration: -1),
-        PantryItem(name: "Chicken", quantity: "1", unit: "lbs", expirationDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!, daysUntilExpiration: 3)
-    ]
     
     // New item state
     @State private var newItem = PantryItem(
         id: "", name: "", quantity: "", unit: "units",
-        expirationDate: Date(), daysUntilExpiration: 0
+        expirationDate: Date()
     )
     
     // Computed property for filtered and sorted items
     var filteredItems: [PantryItem] {
-        let filtered = pantryItems.filter { item in
-            searchQuery.isEmpty || item.name.localizedCaseInsensitiveContains(searchQuery)
+        let filtered = pantryViewModel.pantryItems.filter {
+            searchQuery.isEmpty || $0.name.localizedCaseInsensitiveContains(searchQuery)
         }
-        
+
         switch sortBy {
         case .expiration:
             return filtered.sorted { $0.daysUntilExpiration < $1.daysUntilExpiration }
@@ -70,6 +40,7 @@ struct PantryView: View {
             return filtered.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
         }
     }
+
     
     var body: some View {
         VStack(spacing: 16) {
@@ -108,7 +79,7 @@ struct PantryView: View {
                 VStack(spacing: 16) {
                     ForEach(filteredItems) { item in
                         PantryItemRow(item: item) {
-                            handleDeleteItem(item.id)
+                            handleDeleteItem(item.id ?? UUID().uuidString)
                         }
                     }
                     
@@ -136,35 +107,29 @@ struct PantryView: View {
                 newItem: $newItem,
                 onAdd: handleAddItem
             )
+        }.onAppear{
+
+        pantryViewModel.fetchPantryItems()
+
         }
     }
     
     // MARK: - Functions
-    
-    // Add new item to pantry
     private func handleAddItem() {
-        // Calculate days until expiration
-        let days = Calendar.current.dateComponents([.day], from: Date(), to: newItem.expirationDate).day ?? 0
-        
-        // Create new item with calculated days
-        var itemToAdd = newItem
-        itemToAdd.id = UUID().uuidString
-        itemToAdd.daysUntilExpiration = days
-        
-        // Add to pantry items
-        pantryItems.append(itemToAdd)
-        
-        // Reset new item
-        newItem = PantryItem(
-            id: "", name: "", quantity: "", unit: "units",
-            expirationDate: Date(), daysUntilExpiration: 0
-        )
-    }
+    var itemToAdd = newItem
+    itemToAdd.id = nil
+    pantryViewModel.addPantryItem(itemToAdd)
+
+    // Reset the form
+        newItem = PantryItem(name: "", quantity: "", unit: "units", expirationDate: Date())
+}
+
     
     // Delete item from pantry
     private func handleDeleteItem(_ id: String) {
-        pantryItems.removeAll { $0.id == id }
+        pantryViewModel.deletePantryItem(id)
     }
+
 }
 
 // MARK: - Helper Functions
@@ -321,3 +286,4 @@ struct PantryView_Previews: PreviewProvider {
         PantryView()
     }
 } 
+
