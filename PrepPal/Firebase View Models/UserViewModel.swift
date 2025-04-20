@@ -9,6 +9,7 @@
 import FirebaseFirestore
 import FirebaseAuth
 
+//also a view model, this only gets the username for us now, we could maybe add email to the profile page later though 
 class UserViewModel: ObservableObject {
     private let db = Firestore.firestore()
 
