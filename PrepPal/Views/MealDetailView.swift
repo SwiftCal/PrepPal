@@ -13,58 +13,30 @@ struct MealDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedTab = 0
     @State private var isFavorite = false
-    
+    let mealpageitem: MealPageItem
+    @EnvironmentObject var ingredientsModel: IngredientViewModel
+
     // MARK: - Sample Data
-    let meal = MealDetail(
-        id: UUID(),
-        name: "Vegan Buddha Bowl",
-        description: "A nutritious and colorful plant-based meal",
-        prepTime: 10,
-        cookTime: 5,
-        totalTime: 15,
-        dietType: "Vegan",
-        ingredients: [
-            IngredientSection(
-                title: "For the Bowl",
-                items: [
-                    "1 cup cooked quinoa",
-                    "1 cup chickpeas, rinsed and drained",
-                    "1 medium sweet potato, cubed and roasted",
-                    "1 cup fresh spinach",
-                    "1/2 avocado, sliced",
-                    "1/4 cup shredded red cabbage",
-                    "1/4 cup shredded carrots",
-                    "2 tbsp pumpkin seeds"
-                ]
-            ),
-            IngredientSection(
-                title: "For the Dressing",
-                items: [
-                    "2 tbsp tahini",
-                    "1 tbsp lemon juice",
-                    "1 tbsp maple syrup",
-                    "2 tbsp water",
-                    "1/4 tsp garlic powder",
-                    "Salt and pepper to taste"
-                ]
+        var meal: MealDetail {
+            MealDetail(
+                id: mealpageitem.id ?? UUID().uuidString,
+                name: mealpageitem.name,
+                description: mealpageitem.subtitle,
+                prepTime: mealpageitem.prepTime,
+                cookTime: mealpageitem.cookTime,
+                totalTime: mealpageitem.prepTime + mealpageitem.cookTime,
+                dietType: mealpageitem.type,
+                ingredients: mealpageitem.sections.map {
+                    IngredientSection(
+                        title: $0.title,
+                        items: $0.ingredients.map { "\($0.quantity) \($0.name)" }
+                    )
+                },
+                instructions: mealpageitem.instructions,
+                chefTips: mealpageitem.chefTips ?? ""
             )
-        ],
-        instructions: [
-            "Preheat oven to 400°F (200°C). Toss cubed sweet potatoes with olive oil, salt, and pepper. Roast for 20-25 minutes until tender.",
-            "Cook quinoa according to package instructions. Let cool slightly.",
-            "Prepare the dressing by whisking together tahini, lemon juice, maple syrup, water, garlic powder, salt, and pepper until smooth.",
-            "In a large bowl, arrange quinoa as the base. Add sections of roasted sweet potatoes, chickpeas, spinach, red cabbage, and carrots.",
-            "Top with sliced avocado and pumpkin seeds.",
-            "Drizzle with tahini dressing just before serving."
-        ],
-        chefTips: "For meal prep, keep the dressing separate and add it just before eating. This bowl can be customized with seasonal vegetables based on what you have available.",
-        nutritionalInfo: NutritionalInfo(calories: 450, protein: 15, carbs: 65, fat: 18),
-        similarRecipes: [
-            SimilarRecipe(name: "Quinoa Salad Bowl", prepTime: 10, dietType: "Vegetarian"),
-            SimilarRecipe(name: "Mediterranean Bowl", prepTime: 15, dietType: "Vegan"),
-            SimilarRecipe(name: "Roasted Veggie Bowl", prepTime: 20, dietType: "Gluten-Free")
-        ]
-    )
+        }
+
     
     // MARK: - Body
     var body: some View {
@@ -87,9 +59,9 @@ struct MealDetailView: View {
                     tabSection
                         .padding(.top, 8)
                     
-                    // Similar recipes section
-                    similarRecipesSection
-                        .padding(.top, 16)
+                    // // Similar recipes section
+                    // similarRecipesSection
+                    //     .padding(.top, 16)
                     
                     // Extra space for bottom buttons
                     Spacer()
@@ -106,46 +78,71 @@ struct MealDetailView: View {
     }
     
     // MARK: - Meal Image Section
-    private var mealImageSection: some View {
-        ZStack(alignment: .bottomLeading) {
-            // Placeholder image
+// MARK: - Meal Image Section
+private var mealImageSection: some View {
+    ZStack(alignment: .bottomLeading) {
+        // Image container with fixed aspect ratio
+        AsyncImage(url: URL(string: mealpageitem.imageUrl)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } placeholder: {
             Rectangle()
                 .fill(Color.gray.opacity(0.2))
-                .aspectRatio(1.5, contentMode: .fit)
                 .overlay(
                     Image(systemName: "photo")
                         .font(.system(size: 40))
                         .foregroundColor(.gray)
                 )
-            
-            // Badges at bottom left
-            HStack(spacing: 8) {
-                // Vegan badge
-                Text(meal.dietType)
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.prepPalGreen)
-                    .foregroundColor(.white)
-                    .cornerRadius(16)
-                
-                // Time badge
-                HStack(spacing: 4) {
-                    Text("\(meal.totalTime) min")
-                        .font(.caption)
-                        .fontWeight(.medium)
-                }
+        }
+        .frame(
+            width: UIScreen.main.bounds.width,
+            height: 280
+        )
+        .clipped()
+        .cornerRadius(8)
+
+        
+        // Semi-transparent gradient overlay to ensure badges are visible
+        LinearGradient(
+            gradient: Gradient(colors: [Color.black.opacity(0.0), Color.black.opacity(0.3)]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .cornerRadius(8)
+        
+        // Badges at bottom left
+        HStack(spacing: 8) {
+            // Vegan badge
+            Text(meal.dietType)
+                .font(.caption)
+                .fontWeight(.semibold)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(Color.white)
-                .foregroundColor(.black)
+                .background(Color.prepPalGreen)
+                .foregroundColor(.white)
                 .cornerRadius(16)
-                .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+            
+            // Time badge
+            HStack(spacing: 4) {
+                Image(systemName: "clock")
+                    .font(.caption)
+                Text("\(meal.totalTime) min")
+                    .font(.caption)
+                    .fontWeight(.semibold)
             }
-            .padding(16)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.white)
+            .foregroundColor(.black)
+            .cornerRadius(16)
+            .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
         }
+        .padding(16)
     }
+    .frame(maxWidth: .infinity)
+    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+}
     
     // MARK: - Meal Details Section
     private var mealDetailsSection: some View {
@@ -290,6 +287,8 @@ struct MealDetailView: View {
             // Add All to Grocery List button
             Button(action: {
                 // Add all ingredients to grocery list
+                let allIngredients: [NewIngredientItem] = mealpageitem.sections.flatMap { $0.ingredients }
+                ingredientsModel.addMultipleIngredients(allIngredients)
             }) {
                 HStack {
                     Image(systemName: "cart")
@@ -308,6 +307,9 @@ struct MealDetailView: View {
                 )
             }
             .padding(.top, 8)
+
+
+            
         }
     }
     
@@ -353,39 +355,39 @@ struct MealDetailView: View {
         }
     }
     
-    // MARK: - Similar Recipes Section
-    private var similarRecipesSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            // Header
-            HStack {
-                Text("Similar Recipes")
-                    .font(.headline)
-                    .fontWeight(.bold)
+    // // MARK: - Similar Recipes Section
+    // private var similarRecipesSection: some View {
+    //     VStack(alignment: .leading, spacing: 16) {
+    //         // Header
+    //         HStack {
+    //             Text("Similar Recipes")
+    //                 .font(.headline)
+    //                 .fontWeight(.bold)
                 
-                Spacer()
+    //             Spacer()
                 
-                Button(action: {
-                    // View all similar recipes
-                }) {
-                    Text("View all")
-                        .font(.subheadline)
-                        .foregroundColor(Color.prepPalGreen)
-                }
-            }
-            .padding(.horizontal)
+    //             Button(action: {
+    //                 // View all similar recipes
+    //             }) {
+    //                 Text("View all")
+    //                     .font(.subheadline)
+    //                     .foregroundColor(Color.prepPalGreen)
+    //             }
+    //         }
+    //         .padding(.horizontal)
             
-            // Recipe cards
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(meal.similarRecipes) { recipe in
-                        similarRecipeCard(recipe)
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 8)
-            }
-        }
-    }
+    //         // Recipe cards
+    //         ScrollView(.horizontal, showsIndicators: false) {
+    //             HStack(spacing: 16) {
+    //                 ForEach(meal.similarRecipes) { recipe in
+    //                     similarRecipeCard(recipe)
+    //                 }
+    //             }
+    //             .padding(.horizontal)
+    //             .padding(.bottom, 8)
+    //         }
+    //     }
+    // }
     
     // MARK: - Similar Recipe Card
     private func similarRecipeCard(_ recipe: SimilarRecipe) -> some View {
@@ -400,6 +402,8 @@ struct MealDetailView: View {
                         .font(.system(size: 24))
                         .foregroundColor(.gray)
                 )
+
+            
             
             // Recipe name
             Text(recipe.name)
@@ -439,8 +443,10 @@ struct MealDetailView: View {
         HStack(spacing: 12) {
             // Add to Grocery List button
             Button(action: {
-                // Add to grocery list
+                let allIngredients: [NewIngredientItem] = mealpageitem.sections.flatMap { $0.ingredients }
+                ingredientsModel.addMultipleIngredients(allIngredients)
             }) {
+
                 HStack {
                     Image(systemName: "cart")
                     Text("Add to Grocery List")
@@ -483,7 +489,7 @@ struct MealDetailView: View {
 
 // MARK: - Model Structures
 struct MealDetail: Identifiable {
-    let id: UUID
+    let id: String
     let name: String
     let description: String
     let prepTime: Int
@@ -493,8 +499,8 @@ struct MealDetail: Identifiable {
     let ingredients: [IngredientSection]
     let instructions: [String]
     let chefTips: String
-    let nutritionalInfo: NutritionalInfo
-    let similarRecipes: [SimilarRecipe]
+//    let nutritionalInfo: NutritionalInfo
+    // let similarRecipes: [SimilarRecipe]
 }
 
 struct IngredientSection: Identifiable {
@@ -503,12 +509,12 @@ struct IngredientSection: Identifiable {
     let items: [String]
 }
 
-struct NutritionalInfo {
-    let calories: Int
-    let protein: Int
-    let carbs: Int
-    let fat: Int
-}
+//struct NutritionalInfo {
+//    let calories: Int
+//    let protein: Int
+//    let carbs: Int
+//    let fat: Int
+//}
 
 struct SimilarRecipe: Identifiable {
     let id = UUID()
@@ -522,11 +528,40 @@ extension Color {
     static let prepPalGreen = Color(red: 52/255, green: 168/255, blue: 83/255) // #34A853
 }
 
-// MARK: - Preview
-struct MealDetailView_Previews: PreviewProvider {
+struct MealDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            MealDetailView()
-        }
+        MealDetailView(mealpageitem: sampleMealPageItem)
     }
-} 
+
+    static var sampleMealPageItem: MealPageItem {
+        MealPageItem(
+            id: UUID().uuidString,
+            name: "Vegan Buddha Bowl",
+            subtitle: "A nutritious and colorful plant‑based meal",
+            type: "Vegan",
+            imageUrl: "https://www.noracooks.com/wp-content/uploads/2019/07/IMG_6602.jpg",
+            prepTime: 10,
+            cookTime: 5,
+            chefTips: "Put the fries in the bag lil bro",
+            sections: [
+                MealSection(title: "Salad", ingredients: [
+                    NewIngredientItem(name: "Mixed greens", quantity: "4 Cups", category: "Protein"),
+                    NewIngredientItem(name: "Cherry tomatoes", quantity: "1 Cups", category: "Vegetable")
+                ]),
+                MealSection(title: "Dressing", ingredients: [
+                    NewIngredientItem(name: "Tahini", quantity: "2 Oz", category: "Fat"),
+                    NewIngredientItem(name: "Lemon juice", quantity: "1 Cups", category: "Liquid"),
+                    NewIngredientItem(name: "Maple syrup", quantity: "1 Oz", category: "Sweetener")
+                ])
+            ],
+            instructions: [
+                "Preheat oven to 400°F...",
+                "Cook quinoa...",
+                "Whisk tahini with lemon juice...",
+                "Assemble the bowl...",
+                "Add toppings...",
+                "Drizzle dressing."
+            ]
+        )
+    }
+}
