@@ -8,14 +8,14 @@
 
 
 import Foundation
-import FirebaseFirestore
 import FirebaseAuth
+import FirebaseFirestore
 
+//This view model helps manage the Ingredients from the generated meals and adding them to the grocery list
 class IngredientViewModel: ObservableObject {
     @Published var groceryItems: [GroceryItem] = []
     
     private let db = Firestore.firestore()
-
     private func userIngredientsCollection() throws -> CollectionReference {
         guard let userID = Auth.auth().currentUser?.uid else {
             throw NSError(domain: "No user ID found", code: 401)
@@ -56,8 +56,6 @@ class IngredientViewModel: ObservableObject {
 
 
 
-
-
     func addIngredient(_ ingredient: NewIngredientItem) {
         Task {
             do {
@@ -68,6 +66,7 @@ class IngredientViewModel: ObservableObject {
             }
         }
     }
+    
     func addMultipleIngredients(_ ingredients: [NewIngredientItem]) {
         Task {
             do {
@@ -82,6 +81,7 @@ class IngredientViewModel: ObservableObject {
         }
     }
 
+    
     func deleteIngredient(id: String) {
         Task {
             do {
