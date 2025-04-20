@@ -5,12 +5,15 @@
 //  Created for PrepPal App
 //
 
+
 import SwiftUI
 
 struct ProfileSettingsView: View {
     // MARK: - Properties
     @EnvironmentObject var authModel: AuthModel
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var userViewModel = UserViewModel()
+    @State private var userName: String = ""
     
     // State properties for toggles
     @State private var isVegan = true
@@ -110,6 +113,13 @@ struct ProfileSettingsView: View {
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            userViewModel.fetchUserName { name in
+                if let name = name {
+                    userName = name
+                }
+            }
+        }
     }
     
     // MARK: - Profile Header
@@ -147,7 +157,7 @@ struct ProfileSettingsView: View {
                 
                 // User info
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Alex Johnson")
+                    Text(userName)
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
