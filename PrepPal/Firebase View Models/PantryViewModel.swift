@@ -9,6 +9,8 @@ import FirebaseFirestore
 import FirebaseAuth
 import SwiftUI
 
+
+//basically the same as auth and Ingredients model, would help us interface with firebase for the items in the pantry
 @MainActor
 class PantryViewModel: ObservableObject {
     @Published var pantryItems: [PantryItem] = []
