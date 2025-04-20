@@ -8,6 +8,14 @@
 import Foundation
 import SwiftData
 
+//i used this to avoid any clashed with the other ingredients clashes, kind of works hand in hand for now
+struct NewIngredientItem: Codable {
+    var name: String
+    var quantity: String
+    var category: String
+}
+
+
 @Model
 final class Ingredient {
     // Core properties
@@ -54,3 +62,4 @@ extension Ingredient {
         return expirationDate <= threeDaysFromNow
     }
 } 
+
