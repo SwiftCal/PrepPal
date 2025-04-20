@@ -11,31 +11,74 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-
+    
+    // Authentication model
+    @EnvironmentObject var authModel: AuthModel
+    
+    // Selected tab for navigation
+    @State private var selectedTab: Tab = .home
+    
+    // Enum for tracking tab selection
+    enum Tab {
+        case home, grocery, pantry, meals, profile
+    }
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        // Check if user is authenticated
+        if authModel.user != nil {
+            // Main tab navigation
+            TabView(selection: $selectedTab) {
+                // Home tab
+                NavigationView {
+                    DashboardView()
                 }
-                .onDelete(perform: deleteItems)
+                .tag(Tab.home)
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+                
+                // Grocery tab
+                NavigationView {
+                    GroceryListView()
+                }
+                .tag(Tab.grocery)
+                .tabItem {
+                    Label("Grocery", systemImage: "cart.fill")
+                }
+                
+                // Pantry tab (replacing Scan tab)
+                NavigationView {
+                    PantryView()
+                }
+                .tag(Tab.pantry)
+                .tabItem {
+                    Label("Pantry", systemImage: "archivebox.fill")
+                }
+                
+                // Meals tab (placeholder)
+                NavigationView {
+                    Text("Meals View Coming Soon")
+                        .font(.title)
+                        .foregroundColor(.gray)
+                }
+                .tag(Tab.meals)
+                .tabItem {
+                    Label("Meals", systemImage: "calendar")
+                }
+                
+                // Profile tab
+                NavigationView {
+                    ProfileSettingsView()
+                }
+                .tag(Tab.profile)
+                .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
+            .accentColor(Color.prepPalGreen)
+        } else {
+            // Authentication view
+            AuthView()
         }
     }
 
@@ -57,5 +100,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: [Item.self, User.self, Meal.self, Ingredient.self], inMemory: true)
+        .environmentObject(AuthModel())
 }
