@@ -8,6 +8,7 @@
 import FirebaseFirestore
 import FirebaseAuth
 
+//a similar service/model to the auth and ingredients one, would help us handle getting the meals from firebase
 class MealService {
     private let db = Firestore.firestore()
 
@@ -28,6 +29,8 @@ class MealService {
         _ = try userMealsCollection().addDocument(from: meal)
     }
 
+    
+//    this adds a random placeholder meal for noe, we would chnage this later after getting the API
     func addRandomMeal() async throws -> MealPageItem {
         let imagePool = [
             "https://www.summahealth.org/-/media/project/summahealth/website/page-content/flourish/2_18a_fl_fastfood_400x400.webp?la=en&h=400&w=400&hash=145DC0CF6234A159261389F18A36742A",
