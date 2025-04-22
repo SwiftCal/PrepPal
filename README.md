@@ -33,10 +33,10 @@
 - [x] User can register and log in to their account  
 - [x] User sees a dashboard with a personalized greeting and this week’s meals  
 - [x] User can view a scrollable list of featured meals with images, names, and prep times  
-- [ ] User can generate a new weekly meal plan  
+- [x] User can generate a new weekly meal plan  
 - [ ] User can see a summary of their grocery list for the week  
-- [ ] User can check off grocery list items  
-- [ ] User can add pantry ingredients manually  
+- [x] User can check off grocery list items  
+- [x] User can add pantry ingredients manually  
 - [ ] User receives notifications about expiring pantry items  
 
 **Optional Nice-to-have Stories**
