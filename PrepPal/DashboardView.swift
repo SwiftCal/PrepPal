@@ -75,11 +75,6 @@ struct DashboardView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                // App Header
-                AppHeader(onLogout: {
-                    showLogoutAlert = true
-                })
-                
                 // Welcome Banner
                 WelcomeBanner(userName: userName)
                 
@@ -103,6 +98,18 @@ struct DashboardView: View {
             .padding(.horizontal)
         }
         .background(Color(.systemBackground))
+        .navigationTitle("PrepPal")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    showLogoutAlert = true
+                }) {
+                    Image(systemName: "bell")
+                        .foregroundColor(.gray)
+                }
+            }
+        }
         .onAppear {
             initializeDataIfNeeded()
         }
@@ -115,70 +122,6 @@ struct DashboardView: View {
         } message: {
             Text("Are you sure you want to logout?")
         }
-    }
-}
-
-// MARK: - App Header Component
-struct AppHeader: View {
-//    also added the authentication model here
-    @EnvironmentObject var authenthicationModel: AuthModel
-    // added this to make logout show the
-    @State var showLogoutConfirmation = false
-    var onLogout: (() -> Void)?
-    
-    var body: some View {
-        HStack {
-            // App Logo and Title
-            HStack(spacing: 8) {
-                // Logo placeholder
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.primaryColor)
-                    .frame(width: 32, height: 32)
-                
-                // App Name
-                Text("PrepPal")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-            }
-            
-            Spacer()
-            
-            // Notification and Profile Menu
-            HStack(spacing: 12) {
-                // Notification Bell
-                Button(action: {
-                    // Handle notification button tap
-                }) {
-                    Image(systemName: "bell")
-                        .font(.system(size: 20))
-                        .foregroundColor(.gray)
-                        .padding(8)
-                        .background(Color(.systemGray6))
-                        .clipShape(Circle())
-                }
-                
-                // Profile / Logout Menu
-                Button(action: {
-                    showLogoutConfirmation = true
-                }) {
-                    Image(systemName: "person.circle")
-                        .font(.system(size: 20))
-                        .foregroundColor(.gray)
-                        .padding(8)
-                        .background(Color(.systemGray6))
-                        .clipShape(Circle())
-                }
-                .alert("Are you sure you want to log out?", isPresented: $showLogoutConfirmation) {
-                    Button("Log Out", role: .destructive) {
-                        authenthicationModel.signOut()
-                    }
-                    Button("Cancel", role: .cancel) { }
-                }
-
-            }
-        }
-        .padding(.top, 10)
     }
 }
 
