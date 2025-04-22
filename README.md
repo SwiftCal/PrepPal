@@ -53,6 +53,9 @@
 **Sprint 1**
 ![Screen Recording 2025-04-14 at 21 51 27](https://github.com/user-attachments/assets/3c3b4760-9698-44d4-9131-bb4c623a5f64)
 
+**Sprint 2**
+![ScreenRecording_04-19-2025 14-05-21_1](https://github.com/user-attachments/assets/9d774325-3289-4325-b3c0-1423b21a8831)
+
 
 ### 2. 🧭 Screen Archetypes
 
